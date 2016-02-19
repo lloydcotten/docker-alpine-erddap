@@ -15,10 +15,12 @@ RUN curl -fSL "$ERDDAP_WAR_URL" -o /root/erddap.war && \
   mv /root/erddap.war $CATALINA_HOME/webapps/
 
 COPY files/javaopts.sh $CATALINA_HOME/bin/javaopts.sh
+COPY files/setup.xml $CATALINA_HOME/content/erddap/setup.xml
 
-# COPY files/setup.xml $CATALINA_HOME/content/erddap/setup.xml
+ENV ERDDAP_SCRATCH /erddap
+ENV DATASET_SRC /data
+RUN mkdir -p $ERDDAP_SCRATCH $DATASET_SRC
 
-ENV ERDDAP_DATA /erddapData
-RUN mkdir -p $ERDDAP_DATA
+EXPOSE 8080,8443
 
 CMD ["catalina.sh", "run"]
