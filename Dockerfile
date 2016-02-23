@@ -1,6 +1,7 @@
 FROM lloydcotten/alpine-tomcat:8-jre8
 
-RUN apk --update add bash
+# RUN apk --update add bash libxp libxt libxtst libx11 ttf-dejavu
+RUN apk --update add bash ttf-dejavu
 
 ENV ERDDAP_VERSION 1.68
 
@@ -16,6 +17,9 @@ RUN curl -fSL "$ERDDAP_WAR_URL" -o /root/erddap.war && \
 
 COPY files/javaopts.sh $CATALINA_HOME/bin/javaopts.sh
 COPY files/setup.xml $CATALINA_HOME/content/erddap/setup.xml
+COPY files/wgrib2 /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/wgrib2
 
 ENV ERDDAP_SCRATCH /erddap
 ENV DATASET_SRC /data
